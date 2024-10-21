@@ -1,0 +1,1 @@
+docker build .\Backend\TaskVisualizerWeb -f .\Backend\TaskVisualizerWeb\TaskVisualizerWeb\Dockerfile --force-rm -t taskvisualizerweb
