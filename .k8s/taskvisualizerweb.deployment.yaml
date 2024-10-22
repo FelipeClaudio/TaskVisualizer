@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: taskvisualizerweb-env
+  name: taskvisualizerweb-env
+data:
+  ASPNETCORE_ENVIRONMENT: "Development"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: taskvisualizerweb
+  name: taskvisualizerweb
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: taskvisualizerweb
+  template:
+    metadata:
+      labels:
+        app: taskvisualizerweb
+    spec:
+      containers:
+      - env:
+        - name: ASPNETCORE_ENVIRONMENT
+          valueFrom:
+            configMapKeyRef:
+              key: ASPNETCORE_ENVIRONMENT
+              name: taskvisualizerweb-env
+        image: taskvisualizerweb
+        imagePullPolicy: IfNotPresent
+        name: node-codewithdan
+        ports:
+        - containerPort: 8080
+        resources: {}
