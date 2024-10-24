@@ -13,7 +13,7 @@ jobs:
   build:
     defaults:
           run:
-            working-directory: ../Backend/TaskVisualizerWeb
+            working-directory: /Backend/TaskVisualizerWeb
     runs-on: ubuntu-latest
 
     steps:
