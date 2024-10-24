@@ -5,6 +5,10 @@ VisualStudioVersion = 17.9.34616.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskVisualizerWeb", "TaskVisualizerWeb\TaskVisualizerWeb.csproj", "{6D1716FC-F8F6-4B7A-8FF8-4E836BF245E3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskVisualizerWeb.Repository", "TaskVisualizerWeb.Repository\TaskVisualizerWeb.Repository.csproj", "{7E2CBC59-A8FA-411E-B1D0-F6FC57E424A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskVisualizerWeb.Domain", "TaskVisualizerWeb.Domain\TaskVisualizerWeb.Domain.csproj", "{212E9993-B515-4C69-BE3F-39362B1CDC1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{6D1716FC-F8F6-4B7A-8FF8-4E836BF245E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D1716FC-F8F6-4B7A-8FF8-4E836BF245E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D1716FC-F8F6-4B7A-8FF8-4E836BF245E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E2CBC59-A8FA-411E-B1D0-F6FC57E424A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E2CBC59-A8FA-411E-B1D0-F6FC57E424A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E2CBC59-A8FA-411E-B1D0-F6FC57E424A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E2CBC59-A8FA-411E-B1D0-F6FC57E424A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{212E9993-B515-4C69-BE3F-39362B1CDC1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{212E9993-B515-4C69-BE3F-39362B1CDC1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{212E9993-B515-4C69-BE3F-39362B1CDC1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{212E9993-B515-4C69-BE3F-39362B1CDC1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

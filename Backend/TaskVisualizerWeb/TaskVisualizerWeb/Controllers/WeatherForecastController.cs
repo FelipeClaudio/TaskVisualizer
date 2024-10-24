@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TaskVisualizerWeb.Domain;
 
 namespace TaskVisualizerWeb.Controllers
 {
