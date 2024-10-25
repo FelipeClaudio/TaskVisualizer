@@ -13,4 +13,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TaskVisualizerWeb.Application\TaskVisualizerWeb.Application.csproj" />
+    <ProjectReference Include="..\TaskVisualizerWeb.Domain\TaskVisualizerWeb.Domain.csproj" />
+    <ProjectReference Include="..\TaskVisualizerWeb.Repository\TaskVisualizerWeb.Repository.csproj" />
+  </ItemGroup>
+
 </Project>
