@@ -32,7 +32,7 @@ spec:
             configMapKeyRef:
               key: ASPNETCORE_ENVIRONMENT
               name: taskvisualizerweb-env
-        image: taskvisualizerweb
+        image: taskvisualizerweb:latest
         imagePullPolicy: IfNotPresent
         name: node-codewithdan
         ports:

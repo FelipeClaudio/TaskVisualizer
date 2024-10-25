@@ -10,7 +10,9 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["TaskVisualizerWeb.Presentation/TaskVisualizerWeb.Presentation.csproj", "TaskVisualizerWeb.Presentation/"]
+COPY ["TaskVisualizerWeb.Application/TaskVisualizerWeb.Application.csproj", "TaskVisualizerWeb.Application/"]
 COPY ["TaskVisualizerWeb.Domain/TaskVisualizerWeb.Domain.csproj", "TaskVisualizerWeb.Domain/"]
+COPY ["TaskVisualizerWeb.Repository/TaskVisualizerWeb.Repository.csproj", "TaskVisualizerWeb.Repository/"]
 RUN dotnet restore "./TaskVisualizerWeb.Presentation/TaskVisualizerWeb.Presentation.csproj"
 COPY . .
 WORKDIR "/src/TaskVisualizerWeb.Presentation"

@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskVisualizerWeb.Domain", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskVisualizerWeb.Presentation", "TaskVisualizerWeb.Presentation\TaskVisualizerWeb.Presentation.csproj", "{EB81307F-7794-437A-8BE6-2FE9393C8E32}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskVisualizerWeb.Application", "TaskVisualizerWeb.Application\TaskVisualizerWeb.Application.csproj", "{944936EB-41BA-484A-92B8-09E5D1CE2407}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{EB81307F-7794-437A-8BE6-2FE9393C8E32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB81307F-7794-437A-8BE6-2FE9393C8E32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB81307F-7794-437A-8BE6-2FE9393C8E32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{944936EB-41BA-484A-92B8-09E5D1CE2407}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{944936EB-41BA-484A-92B8-09E5D1CE2407}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{944936EB-41BA-484A-92B8-09E5D1CE2407}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{944936EB-41BA-484A-92B8-09E5D1CE2407}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
