@@ -97,7 +97,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres-db
+  name: postgres-db-web
 spec:
   type: NodePort
   ports:
@@ -106,3 +106,19 @@ spec:
       targetPort: 5432
   selector:
     app: postgres
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-db
+  labels:
+    app: postgres-db
+spec:
+  selector:
+    app: postgres
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432

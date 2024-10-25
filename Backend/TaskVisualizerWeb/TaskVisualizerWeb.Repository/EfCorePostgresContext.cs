@@ -30,11 +30,15 @@ public sealed class EfCorePostgreContext : DbContext
     /// <param name="optionsBuilder">The options builder.</param>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var builder = new ConfigurationBuilder().SetBasePath(Path.Combine(Directory.GetCurrentDirectory()))
+        if (!optionsBuilder.IsConfigured)
+        {
+            var builder = new ConfigurationBuilder().SetBasePath(Path.Combine(Directory.GetCurrentDirectory()))
+                                                .AddJsonFile("appsettings.json", false)
                                                 .AddJsonFile("appsettings.Development.json", false)
                                                 .Build();
 
-        optionsBuilder.UseNpgsql(builder.GetConnectionString("WebApiDatabase"));
+            optionsBuilder.UseNpgsql(builder.GetConnectionString("WebApiDatabase"));
+        }
     }
 
     /// <summary>The on model creating.</summary>

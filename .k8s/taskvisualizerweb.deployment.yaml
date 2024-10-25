@@ -5,7 +5,7 @@ metadata:
     app: taskvisualizerweb-env
   name: taskvisualizerweb-env
 data:
-  ASPNETCORE_ENVIRONMENT: "Development"
+  ASPNETCORE_ENVIRONMENT: "Production"
 
 ---
 
@@ -16,7 +16,7 @@ metadata:
     app: taskvisualizerweb
   name: taskvisualizerweb
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: taskvisualizerweb
@@ -34,7 +34,10 @@ spec:
               name: taskvisualizerweb-env
         image: taskvisualizerweb:latest
         imagePullPolicy: IfNotPresent
-        name: node-codewithdan
+        name: taskvisualizerweb
         ports:
         - containerPort: 8080
-        resources: {}
+        resources: 
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
