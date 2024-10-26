@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskVisualizerWeb.Domain\TaskVisualizerWeb.Domain.csproj" />
+    <ProjectReference Include="..\TaskVisulaizerWeb.Contracts\TaskVisulaizerWeb.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
