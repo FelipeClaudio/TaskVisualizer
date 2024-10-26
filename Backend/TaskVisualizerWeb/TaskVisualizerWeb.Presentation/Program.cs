@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TaskVisualizerWeb.Application;
+using TaskVisualizerWeb.Application.User;
 using TaskVisualizerWeb.Domain;
 using TaskVisualizerWeb.Repository;
 
@@ -15,9 +16,8 @@ builder.Services.AddSwaggerGen();
 var configValue = builder.Configuration.GetValue<string>("ConnectionStrings:WebApiDatabase");
 
 builder.Services.AddDbContext<EfCorePostgreContext>(options => options.UseNpgsql(configValue));
-builder.Services.AddScoped<IWeatherForecastService, WeatherForecastService>();
-
-builder.Services.AddScoped<IWeatherForecastRepository, WeatherForecastRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 

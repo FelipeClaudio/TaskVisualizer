@@ -3,7 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
-using TaskVisualizerWeb.Domain;
+using TaskVisualizerWeb.Domain.Models.User;
 
 /// <summary>The Entity Framework Core and PostgreSQL context.</summary>
 public sealed class EfCorePostgreContext : DbContext
@@ -22,7 +22,7 @@ public sealed class EfCorePostgreContext : DbContext
     #region [public] Schema Tables
 
     /// <summary>Gets or sets the roles.</summary>
-    public DbSet<WeatherForecast> WeatherForecasts { get; set; }
+    public DbSet<User> Users { get; set; }
 
     #endregion
 
