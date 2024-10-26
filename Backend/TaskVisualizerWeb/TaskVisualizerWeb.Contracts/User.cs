@@ -1,4 +1,4 @@
-﻿namespace TaskVisulaizerWeb.Contracts;
+﻿namespace TaskVisualizerWeb.Contracts;
 
 public readonly record struct User(string Name, string Email, UserStatusEnum Status);
 
