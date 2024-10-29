@@ -11,8 +11,11 @@ public class UsersController(ILogger<UsersController> logger, IUserService userS
     private readonly ILogger<UsersController> _logger = logger;
     private readonly IUserService _userService = userService;
 
-    [HttpGet(Name = "{id}")]
+    [HttpGet("{id}")]
     public User Get(int id) => _userService.Get(id);
+
+    [HttpGet]
+    public List<User> GetAll() => _userService.GetAll();
 
     [HttpPost]
     public User Add(User user) => _userService.Add(user);
