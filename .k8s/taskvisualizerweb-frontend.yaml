@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: taskvisualizerweb-fe
+  name: taskvisualizerweb-fe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: taskvisualizerweb-fe
+  template:
+    metadata:
+      labels:
+        app: taskvisualizerweb-fe
+    spec:
+      containers:
+      - image: taskvisualizer-frontend:latest
+        imagePullPolicy: IfNotPresent
+        name: taskvisualizerweb
+        ports:
+        - containerPort: 4200
+        resources: 
+          limits:
+            memory: "2Gi"
+            cpu: "500m"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: taskvisualizerweb-external-frontend
+spec:
+  type: NodePort
+  ports:
+    - nodePort: 32124
+      port: 4200
+      targetPort: 4200
+  selector:
+    app: taskvisualizerweb-fe
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: taskvisualizerweb-frontend
+  labels:
+    app: taskvisualizerweb-frontend
+spec:
+  selector:
+    app: taskvisualizerweb-fe
+  ports:
+  - protocol: TCP
+    port: 2531
+    targetPort: 8080
