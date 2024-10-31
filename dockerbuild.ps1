@@ -1,1 +1,2 @@
 docker build .\Backend\TaskVisualizerWeb -f .\Backend\TaskVisualizerWeb\TaskVisualizerWeb.Presentation\Dockerfile --force-rm -t taskvisualizerweb
+docker build .\Frontend -f .\Frontend\Dockerfile --force-rm -t taskvisualizer-frontend

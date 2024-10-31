@@ -28,4 +28,15 @@ public class UserService(IUserRepository repository) : IUserService
 
         return new Contracts.User(user.Name, user.Email, (UserStatusEnum)user.Status);
     }
+
+    public List<Contracts.User> GetAll()
+    {
+       var users = _repository.GetAll();
+
+        return users.Select(user => new Contracts.User { 
+            Email = user.Email, 
+            Name = user.Name, 
+            Status = (UserStatusEnum)user.Status }
+        ).ToList();
+    }
 }
