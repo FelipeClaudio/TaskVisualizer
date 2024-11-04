@@ -3,14 +3,13 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using TaskVisualizerWeb.Repository;
 using Testcontainers.PostgreSql;
 
 namespace TaskVisualzierWeb.IntegrationTests;
 
 public class IntegrationTestWebAppFactory
-    : WebApplicationFactory<Program>,
+    : WebApplicationFactory<TaskVisualizerWeb.Presentation.Program>,
       IAsyncLifetime
 {
     // "Host=localhost;Port=32321; Database=TaskVisualizerDB; Username=ps_user; Password=SecurePassword"

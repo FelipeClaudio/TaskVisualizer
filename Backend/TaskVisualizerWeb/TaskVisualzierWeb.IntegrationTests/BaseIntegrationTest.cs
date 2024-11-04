@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Hosting.Server;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using TaskVisualizerWeb.Repository;
 using TaskVisualzierWeb.IntegrationTests;
 

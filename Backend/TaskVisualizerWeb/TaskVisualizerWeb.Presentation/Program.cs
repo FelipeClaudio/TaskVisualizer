@@ -4,30 +4,38 @@ using TaskVisualizerWeb.Application.User;
 using TaskVisualizerWeb.Domain;
 using TaskVisualizerWeb.Repository;
 
-var builder = WebApplication.CreateBuilder(args);
+namespace TaskVisualizerWeb.Presentation;
 
-// Add services to the container.
+public class Program
+{
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+        // Add services to the container.
 
-var configValue = builder.Configuration.GetValue<string>("ConnectionStrings:WebApiDatabase");
+        builder.Services.AddControllers();
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<EfCorePostgreContext>(options => options.UseNpgsql(configValue));
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+        var configValue = builder.Configuration.GetValue<string>("ConnectionStrings:WebApiDatabase");
 
-var app = builder.Build();
+        builder.Services.AddDbContext<EfCorePostgreContext>(options => options.UseNpgsql(configValue));
+        builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+        var app = builder.Build();
 
-app.UseHttpsRedirection();
+        app.UseSwagger();
+        app.UseSwaggerUI();
 
-app.UseAuthorization();
+        app.UseHttpsRedirection();
 
-app.MapControllers();
+        app.UseAuthorization();
 
-app.Run();
+        app.MapControllers();
+
+        app.Run();
+    }
+}
