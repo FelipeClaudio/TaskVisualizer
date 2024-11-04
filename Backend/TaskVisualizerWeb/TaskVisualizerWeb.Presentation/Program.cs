@@ -24,8 +24,12 @@ public class Program
         builder.Services.AddDbContext<EfCorePostgreContext>(options => options.UseNpgsql(configValue));
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
-
         var app = builder.Build();
+
+        app.UseCors(builder => builder
+             .AllowAnyOrigin()
+             .AllowAnyMethod()
+             .AllowAnyHeader());
 
         app.UseSwagger();
         app.UseSwaggerUI();

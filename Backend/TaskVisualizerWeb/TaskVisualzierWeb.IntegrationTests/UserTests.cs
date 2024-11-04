@@ -35,7 +35,7 @@ public class UserTests : BaseIntegrationTest
         await client.PostAsJsonAsync("/users", user);
 
         // Act
-        var result = await client.GetAsync("Users?id=1");
+        var result = await client.GetAsync("users/1");
         var createdUser = await result.Content.ReadFromJsonAsync<TaskVisualizerWeb.Contracts.User>();
 
         // Assert

@@ -16,4 +16,6 @@ public class UserRepository(EfCorePostgreContext context) : IUserRepository
     }
 
     public User? Get(int id) => _dbContext.Users.SingleOrDefault(u => u.Id == id);
+
+    public List<User> GetAll() => _dbContext.Users.ToList();
 }

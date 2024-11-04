@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: taskvisualizerweb-fe
+  name: taskvisualizerweb-fe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: taskvisualizerweb-fe
+  template:
+    metadata:
+      labels:
+        app: taskvisualizerweb-fe
+    spec:
+      containers:
+      - image: taskvisualizer-frontend:latest
+        imagePullPolicy: IfNotPresent
+        name: taskvisualizerweb
+        ports:
+        - containerPort: 4200
+        resources: 
+          limits:
+            memory: "2Gi"
+            cpu: "500m"
