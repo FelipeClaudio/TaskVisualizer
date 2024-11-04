@@ -14,10 +14,10 @@ For now, both applications run on docker without any orchestrator supporting it.
 **TODO**
 
 ## Wish List
-- [ ] Kubernetes support
+- [X] Kubernetes support
 - [ ] Unit tests in the front end
-- [ ] Unit tests in the backend
-- [ ] Integration tests in the backend
+- [X] Unit tests in the backend
+- [X] Integration tests in the backend
 - [ ] End to end tests
 - [ ] Code coverage
 - [X] Business documentation
