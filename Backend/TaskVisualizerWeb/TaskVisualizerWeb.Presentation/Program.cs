@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TaskVisualizerWeb.Application;
 using TaskVisualizerWeb.Application.User;
-using TaskVisualizerWeb.Domain;
+using TaskVisualizerWeb.Domain.Models.User;
 using TaskVisualizerWeb.Repository;
 
 namespace TaskVisualizerWeb.Presentation;

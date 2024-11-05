@@ -1,5 +1,4 @@
-﻿using TaskVisualizerWeb.Domain;
-using TaskVisualizerWeb.Domain.Models.User;
+﻿using TaskVisualizerWeb.Domain.Models.User;
 
 namespace TaskVisualizerWeb.Repository;
 

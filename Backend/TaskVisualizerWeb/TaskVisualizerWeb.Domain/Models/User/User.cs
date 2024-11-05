@@ -2,7 +2,7 @@ using TaskVisualizerWeb.Domain.Models.Commons;
 
 namespace TaskVisualizerWeb.Domain.Models.User;
 
-public class User : Entity
+public sealed class User : Entity
 {
     public required string Name { get; set; }
     public required string Email { get; set; }

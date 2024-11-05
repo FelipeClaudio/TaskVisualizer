@@ -1,6 +1,4 @@
-﻿using TaskVisualizerWeb.Domain.Models.User;
-
-namespace TaskVisualizerWeb.Domain;
+﻿namespace TaskVisualizerWeb.Domain.Models.User;
 
 public interface IUserRepository
 {

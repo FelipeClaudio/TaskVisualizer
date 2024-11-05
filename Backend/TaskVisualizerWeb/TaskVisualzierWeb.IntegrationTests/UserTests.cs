@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 
 namespace TaskVisualzierWeb.IntegrationTests;
-public class UserTests : BaseIntegrationTest
+public sealed class UserTests : BaseIntegrationTest
 {
     private readonly IntegrationTestWebAppFactory _factory;
 

@@ -1,6 +1,5 @@
 ﻿using TaskVisualizerWeb.Application.User;
-using TaskVisualizerWeb.Contracts;
-using TaskVisualizerWeb.Domain;
+using TaskVisualizerWeb.Domain.Models.User;
 
 namespace TaskVisualizerWeb.Application;
 
@@ -17,7 +16,7 @@ public class UserService(IUserRepository repository) : IUserService
                 Status = (Domain.Models.User.UserStatusEnum)User.Status 
             });
 
-        return new Contracts.User(user.Name, user.Email, (UserStatusEnum)user.Status);
+        return new Contracts.User(user.Name, user.Email, (Contracts.UserStatusEnum)user.Status);
     }
 
     public Contracts.User Get(int id)
@@ -26,7 +25,7 @@ public class UserService(IUserRepository repository) : IUserService
         if (user is null)
             throw new InvalidDataException($"User with id '{id}' does not exist");
 
-        return new Contracts.User(user.Name, user.Email, (UserStatusEnum)user.Status);
+        return new Contracts.User(user.Name, user.Email, (Contracts.UserStatusEnum)user.Status);
     }
 
     public List<Contracts.User> GetAll()
@@ -36,7 +35,7 @@ public class UserService(IUserRepository repository) : IUserService
         return users.Select(user => new Contracts.User { 
             Email = user.Email, 
             Name = user.Name, 
-            Status = (UserStatusEnum)user.Status }
+            Status = (Contracts.UserStatusEnum)user.Status }
         ).ToList();
     }
 }

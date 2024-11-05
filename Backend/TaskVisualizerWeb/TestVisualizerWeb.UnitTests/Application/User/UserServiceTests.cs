@@ -1,11 +1,11 @@
 using FluentAssertions;
 using Moq;
 using TaskVisualizerWeb.Application;
-using TaskVisualizerWeb.Domain;
+using TaskVisualizerWeb.Domain.Models.User;
 
 namespace TestVisualizerWeb.UnitTests.Application.User;
 
-public class UserServiceTests
+public sealed class UserServiceTests
 {
     [Fact]
     public void Add_ValidData_ReturnCreatedUser()
@@ -32,8 +32,6 @@ public class UserServiceTests
         var createdUser = service.Add(userToBeAdded);
 
         // Assert
-        createdUser.Name.Should().Be(userToBeAdded.Name);
-        createdUser.Email.Should().Be(userToBeAdded.Email);
-        createdUser.Status.Should().Be(userToBeAdded.Status);
+        createdUser.Should().BeEquivalentTo(userToBeAdded);
     }
 }
