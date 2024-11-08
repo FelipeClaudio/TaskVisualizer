@@ -2,7 +2,7 @@
 
 public interface IUserRepository
 {
-    List<User> GetAll();
-    User Add(User user);
-    User? Get(int id);
+    Task<List<User>> GetAllAsync();
+    Task<User> AddAsync(User user);
+    Task<User?> GetAsync(int id);
 }

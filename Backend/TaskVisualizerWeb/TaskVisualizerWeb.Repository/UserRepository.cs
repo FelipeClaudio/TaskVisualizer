@@ -1,4 +1,5 @@
-﻿using TaskVisualizerWeb.Domain.Models.User;
+﻿using Microsoft.EntityFrameworkCore;
+using TaskVisualizerWeb.Domain.Models.User;
 
 namespace TaskVisualizerWeb.Repository;
 
@@ -6,15 +7,15 @@ public class UserRepository(EfCorePostgreContext context) : IUserRepository
 {
     private readonly EfCorePostgreContext _dbContext = context;
 
-    public User Add(User user)
+    public async Task<User> AddAsync(User user)
     {
         var createdUser = _dbContext.Add(user);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
 
         return createdUser.Entity;
     }
 
-    public User? Get(int id) => _dbContext.Users.SingleOrDefault(u => u.Id == id);
+    public async Task<User?> GetAsync(int id) => await _dbContext.Users.SingleOrDefaultAsync(u => u.Id == id);
 
-    public List<User> GetAll() => _dbContext.Users.ToList();
+    public async Task<List<User>> GetAllAsync() => await _dbContext.Users.ToListAsync();
 }

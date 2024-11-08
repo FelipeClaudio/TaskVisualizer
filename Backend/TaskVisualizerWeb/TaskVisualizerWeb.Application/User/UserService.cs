@@ -7,9 +7,9 @@ public class UserService(IUserRepository repository) : IUserService
 {
     private readonly IUserRepository _repository = repository;
 
-    public Contracts.User Add(Contracts.User User)
+    public async Task<Contracts.User> AddAsync(Contracts.User User)
     {
-        var user =  _repository.Add(
+        var user =  await _repository.AddAsync(
             new Domain.Models.User.User { 
                 Name = User.Name, 
                 Email = User.Email, 
@@ -19,18 +19,18 @@ public class UserService(IUserRepository repository) : IUserService
         return new Contracts.User(user.Name, user.Email, (Contracts.UserStatusEnum)user.Status);
     }
 
-    public Contracts.User Get(int id)
+    public async Task<Contracts.User> GetAsync(int id)
     {
-        var user = _repository.Get(id);
+        var user = await _repository.GetAsync(id);
         if (user is null)
             throw new InvalidDataException($"User with id '{id}' does not exist");
 
         return new Contracts.User(user.Name, user.Email, (Contracts.UserStatusEnum)user.Status);
     }
 
-    public List<Contracts.User> GetAll()
+    public async Task<List<Contracts.User>> GetAllAsync()
     {
-       var users = _repository.GetAll();
+       var users = await _repository.GetAllAsync();
 
         return users.Select(user => new Contracts.User { 
             Email = user.Email, 

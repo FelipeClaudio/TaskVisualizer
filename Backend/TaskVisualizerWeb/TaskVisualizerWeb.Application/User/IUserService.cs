@@ -3,7 +3,7 @@ using User = Contracts.User;
 
 public interface IUserService
 {
-    List<User> GetAll();
-    User Get(int id);
-    User Add(User User);
+    Task<List<User>> GetAllAsync();
+    Task<User> GetAsync(int id);
+    Task<User> AddAsync(User User);
 }

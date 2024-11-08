@@ -8,7 +8,7 @@ namespace TestVisualizerWeb.UnitTests.Application.User;
 public sealed class UserServiceTests
 {
     [Fact]
-    public void Add_ValidData_ReturnCreatedUser()
+    public async Task Add_ValidData_ReturnCreatedUser()
     {
         // Arrange
         var repositoryMock = new Mock<IUserRepository>();
@@ -21,15 +21,15 @@ public sealed class UserServiceTests
             Status = (TaskVisualizerWeb.Domain.Models.User.UserStatusEnum)userToBeAdded.Status,
         };
         repositoryMock
-            .Setup(ur => ur.Add(It.Is<TaskVisualizerWeb.Domain.Models.User.User>(u => 
+            .Setup(ur => ur.AddAsync(It.Is<TaskVisualizerWeb.Domain.Models.User.User>(u => 
                 u.Name == userToBeAdded.Name && 
                 u.Email == userToBeAdded.Email &&
                 u.Status == (TaskVisualizerWeb.Domain.Models.User.UserStatusEnum) userToBeAdded.Status
                 )))
-            .Returns(response);
+            .ReturnsAsync(response);
 
         // Act
-        var createdUser = service.Add(userToBeAdded);
+        var createdUser = await service.AddAsync(userToBeAdded);
 
         // Assert
         createdUser.Should().BeEquivalentTo(userToBeAdded);

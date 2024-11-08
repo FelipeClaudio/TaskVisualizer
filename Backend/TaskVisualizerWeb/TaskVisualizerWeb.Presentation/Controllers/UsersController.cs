@@ -12,11 +12,11 @@ public class UsersController(ILogger<UsersController> logger, IUserService userS
     private readonly IUserService _userService = userService;
 
     [HttpGet("{id}")]
-    public User Get(int id) => _userService.Get(id);
+    public async Task<User> GetAsync(int id) => await _userService.GetAsync(id);
 
     [HttpGet]
-    public List<User> GetAll() => _userService.GetAll();
+    public async Task<List<User>> GetAllAsync() => await _userService.GetAllAsync();
 
     [HttpPost]
-    public User Add(User user) => _userService.Add(user);
+    public async Task<User> AddAsync(User user) => await _userService.AddAsync(user);
 }
