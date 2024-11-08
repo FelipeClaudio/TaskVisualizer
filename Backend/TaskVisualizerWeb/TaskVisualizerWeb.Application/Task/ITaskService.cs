@@ -1,5 +1,8 @@
-﻿namespace TaskVisualizerWeb.Application.Task;
+﻿using TaskVisualizerWeb.Contracts.Task.Request;
+using TaskVisualizerWeb.Contracts.Task.Response;
+
+namespace TaskVisualizerWeb.Application.Task;
 public interface ITaskService
 {
-    //Task<> CreateTask()
+    Task<TaskResponse> AddAsync(TaskCreationRequest taskTobeCreated);
 }
