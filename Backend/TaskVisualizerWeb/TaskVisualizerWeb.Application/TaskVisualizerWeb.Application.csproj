@@ -9,7 +9,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TaskVisualizerWeb.Contracts\TaskVisualizerWeb.Contracts.csproj" />
     <ProjectReference Include="..\TaskVisualizerWeb.Domain\TaskVisualizerWeb.Domain.csproj" />
-    <ProjectReference Include="..\TaskVisulaizerWeb.Contracts\TaskVisualizerWeb.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

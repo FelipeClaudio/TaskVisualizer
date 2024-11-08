@@ -22,7 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TaskVisualizerWeb.Application\TaskVisualizerWeb.Application.csproj" />
     <ProjectReference Include="..\TaskVisualizerWeb.Contracts\TaskVisualizerWeb.Contracts.csproj" />
-    <ProjectReference Include="..\TaskVisulaizerWeb.Contracts\TaskVisualizerWeb.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,5 +1,5 @@
 ﻿namespace TaskVisualizerWeb.Application.User;
-using User = Contracts.User;
+using User = Contracts.User.User;
 
 public interface IUserService
 {

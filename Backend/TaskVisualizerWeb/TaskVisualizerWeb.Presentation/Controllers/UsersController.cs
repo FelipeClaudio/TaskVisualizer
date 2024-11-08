@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TaskVisualizerWeb.Application.User;
-using TaskVisualizerWeb.Contracts;
+using TaskVisualizerWeb.Contracts.User;
 
 namespace TaskVisualizerWeb.Controllers;
 
