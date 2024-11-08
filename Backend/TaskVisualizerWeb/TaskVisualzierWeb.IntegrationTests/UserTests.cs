@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using System.Net.Http.Json;
-using TaskVisualizerWeb.Contracts.User;
+using TaskVisualizerWeb.Contracts.User.Commons;
+using TaskVisualizerWeb.Contracts.User.Request;
 
 namespace TaskVisualzierWeb.IntegrationTests;
 public sealed class UserTests : BaseIntegrationTest
@@ -16,12 +17,12 @@ public sealed class UserTests : BaseIntegrationTest
     public async Task CreateUser_ValidData_ShouldReturnCreatedUser()
     {
         // Arrange
-        var user = new User("Test User", "test@test.com", UserStatusEnum.Active);
+        var user = new CreateUserRequest("Test User", "test@test.com", UserStatusEnum.Active);
         var client = _factory.CreateClient();
 
         // Act
         var result = await client.PostAsJsonAsync("/users", user);
-        var createdUser = await result.Content.ReadFromJsonAsync<User>();
+        var createdUser = await result.Content.ReadFromJsonAsync<CreateUserRequest>();
 
         // Assert
         createdUser.Should().BeEquivalentTo(user);
@@ -31,13 +32,13 @@ public sealed class UserTests : BaseIntegrationTest
     public async Task GetUser_ValidData_ShouldReturnCreatedUser()
     {
         // Arrange
-        var user = new User("Test User", "test@test.com", UserStatusEnum.Active);
+        var user = new CreateUserRequest("Test User", "test@test.com", UserStatusEnum.Active);
         var client = _factory.CreateClient();
         await client.PostAsJsonAsync("/users", user);
 
         // Act
         var result = await client.GetAsync("users/1");
-        var createdUser = await result.Content.ReadFromJsonAsync<User>();
+        var createdUser = await result.Content.ReadFromJsonAsync<CreateUserRequest>();
 
         // Assert
         createdUser.Should().BeEquivalentTo(user);

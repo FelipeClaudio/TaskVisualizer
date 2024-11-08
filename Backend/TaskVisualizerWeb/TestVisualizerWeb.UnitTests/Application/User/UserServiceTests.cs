@@ -1,7 +1,9 @@
 using FluentAssertions;
 using Moq;
 using TaskVisualizerWeb.Application;
+using TaskVisualizerWeb.Contracts.User.Request;
 using TaskVisualizerWeb.Domain.Models.User;
+using UserStatusEnum = TaskVisualizerWeb.Domain.Models.User.UserStatusEnum;
 
 namespace TestVisualizerWeb.UnitTests.Application.User;
 
@@ -13,7 +15,7 @@ public sealed class UserServiceTests
         // Arrange
         var repositoryMock = new Mock<IUserRepository>();
         var service = new UserService(repositoryMock.Object);
-        var userToBeAdded = new TaskVisualizerWeb.Contracts.User.User("Test User", "test@test.com", TaskVisualizerWeb.Contracts.User.UserStatusEnum.Active);
+        var userToBeAdded = new CreateUserRequest("Test User", "test@test.com", TaskVisualizerWeb.Contracts.User.Commons.UserStatusEnum.Active);
         var response = new TaskVisualizerWeb.Domain.Models.User.User
         {
             Name = userToBeAdded.Name,

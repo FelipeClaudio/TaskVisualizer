@@ -1,9 +1,11 @@
 ﻿namespace TaskVisualizerWeb.Application.User;
-using User = Contracts.User.User;
+
+using TaskVisualizerWeb.Contracts.User.Response;
+using CreateUserRequest = Contracts.User.Request.CreateUserRequest;
 
 public interface IUserService
 {
-    Task<List<User>> GetAllAsync();
-    Task<User> GetAsync(int id);
-    Task<User> AddAsync(User User);
+    Task<List<UserResponse>> GetAllAsync();
+    Task<UserResponse> GetAsync(int id);
+    Task<UserResponse> AddAsync(CreateUserRequest User);
 }
