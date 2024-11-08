@@ -29,7 +29,7 @@ namespace TestVisualizerWeb.UnitTests.Application.Task;
             Name = taskToBeAdded.Name,
             Description = taskToBeAdded.Description,
             DueDate = taskToBeAdded.DueDate,
-            Statuses = new List<TaskHistory> { new TaskHistory { Id = 1, ValidTo = null, StatusEnum = (TaskStatusEnum) taskToBeAdded.TaskStatus} },
+            Statuses = [new() { Id = 1, ValidTo = null, StatusEnum = (TaskStatusEnum)taskToBeAdded.TaskStatus }],
             Points = taskToBeAdded.Points,
             UserId = taskToBeAdded.UserId,
         };
