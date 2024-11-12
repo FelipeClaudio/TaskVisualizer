@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using TaskVisualizerWeb.Application;
+using TaskVisualizerWeb.Application.Task;
 using TaskVisualizerWeb.Application.User;
+using TaskVisualizerWeb.Domain.Models.Task;
 using TaskVisualizerWeb.Domain.Models.User;
 using TaskVisualizerWeb.Repository;
 
@@ -24,6 +26,8 @@ public class Program
         builder.Services.AddDbContext<EfCorePostgreContext>(options => options.UseNpgsql(configValue));
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<ITaskService, TaskService>();
+        builder.Services.AddScoped<ITaskRepository, TaskRepository>();
         var app = builder.Build();
 
         app.UseCors(builder => builder

@@ -3,6 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using TaskVisualizerWeb.Domain.Models.Task;
 using TaskVisualizerWeb.Domain.Models.User;
 
 /// <summary>The Entity Framework Core and PostgreSQL context.</summary>
@@ -21,8 +22,9 @@ public sealed class EfCorePostgreContext : DbContext
 
     #region [public] Schema Tables
 
-    /// <summary>Gets or sets the roles.</summary>
     public DbSet<User> Users { get; set; }
+    public DbSet<Task> Tasks { get; set; }
+    public DbSet<TaskHistory> TasksHistory { get; set; }
 
     #endregion
 

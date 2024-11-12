@@ -1,4 +1,5 @@
-﻿using TaskVisualizerWeb.Domain.Models.Commons;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using TaskVisualizerWeb.Domain.Models.Commons;
 
 namespace TaskVisualizerWeb.Domain.Models.Task;
 public sealed class TaskHistory : Entity

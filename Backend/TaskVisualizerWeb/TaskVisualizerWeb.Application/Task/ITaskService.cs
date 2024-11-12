@@ -5,4 +5,5 @@ namespace TaskVisualizerWeb.Application.Task;
 public interface ITaskService
 {
     Task<TaskResponse> AddAsync(TaskCreationRequest taskTobeCreated);
+    Task<TaskResponse> GetAsync(int id);
 }

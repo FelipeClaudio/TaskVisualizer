@@ -9,7 +9,7 @@ public class UserRepository(EfCorePostgreContext context) : IUserRepository
 
     public async Task<User> AddAsync(User user)
     {
-        var createdUser = _dbContext.Add(user);
+        var createdUser = await _dbContext.AddAsync(user);
         await _dbContext.SaveChangesAsync();
 
         return createdUser.Entity;

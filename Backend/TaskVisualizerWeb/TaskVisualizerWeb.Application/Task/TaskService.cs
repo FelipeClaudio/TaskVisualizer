@@ -33,4 +33,22 @@ public class TaskService(ITaskRepository taskRepository) : ITaskService
 
         return taskResponse;
     }
+
+    public async Task<TaskResponse> GetAsync(int id)
+    {
+        var task = await _taskRepository.GetAsync(id);
+        if (task is null)
+            throw new InvalidDataException($"Task with id '{id}' does not exist");
+
+        var lastStatus = task.Statuses.LastOrDefault();
+
+        return new TaskResponse(
+            task.Id, 
+            task.Name, 
+            task.Description, 
+            task.DueDate, 
+            task.Points, 
+            (Contracts.Task.Commons.TaskStatusEnum)(lastStatus?.StatusEnum ?? TaskStatusEnum.NotStarted), 
+            task.UserId);
+    }
 }
