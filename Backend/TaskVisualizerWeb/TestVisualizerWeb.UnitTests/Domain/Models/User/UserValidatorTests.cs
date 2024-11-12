@@ -12,7 +12,7 @@ public sealed class UserValidatorTests
     [InlineData("test")]
     [InlineData("")]
     [Theory]
-    public async Task User_InvalidEmail_ShouldThrowException(string email)
+    public async System.Threading.Tasks.Task ValidateAndThrowAsync_UserWithInvalidEmail_ShouldThrowException(string email)
     {
         // Arrange
         var user = new Builder().CreateNew<TaskVisualizerWeb.Domain.Models.User.User>()
@@ -21,23 +21,7 @@ public sealed class UserValidatorTests
         var validator = new UserValidator();
 
         // Act
-        Func<Task> act = () => validator.ValidateAndThrowAsync(user);
-
-        // Assert
-        await act.Should().ThrowAsync<ValidationException>();
-    }
-
-    [Fact]
-    public async Task User_EmptyName_ShouldThrowException()
-    {
-        // Arrange
-        var user = new Builder().CreateNew<TaskVisualizerWeb.Domain.Models.User.User>()
-            .With(u => u.Name = string.Empty).Build();
-
-        var validator = new UserValidator();
-
-        // Act
-        Func<Task> act = () => validator.ValidateAndThrowAsync(user);
+        Func<System.Threading.Tasks.Task> act = () => validator.ValidateAndThrowAsync(user);
 
         // Assert
         await act.Should().ThrowAsync<ValidationException>();

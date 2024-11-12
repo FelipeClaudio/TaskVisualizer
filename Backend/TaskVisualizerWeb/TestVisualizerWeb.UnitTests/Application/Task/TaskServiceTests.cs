@@ -1,14 +1,12 @@
 ﻿using FluentAssertions;
 using Moq;
-using TaskVisualizerWeb.Application;
 using TaskVisualizerWeb.Application.Task;
 using TaskVisualizerWeb.Contracts.Task.Request;
-using TaskVisualizerWeb.Contracts.User.Request;
 using TaskVisualizerWeb.Domain.Models.Task;
-using TaskVisualizerWeb.Domain.Models.User;
 
 namespace TestVisualizerWeb.UnitTests.Application.Task;
- public sealed class TaskServiceTests
+
+public sealed class TaskServiceTests
 {
     [Fact]
     public async System.Threading.Tasks.Task CreateTask_ValidInput_ShouldCreateTask()
