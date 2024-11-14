@@ -32,8 +32,5 @@ public class UserService(IUserRepository repository) : IUserService
        return users.Select(user => user.ToContract()).ToList();
     }
 
-    public async Task<bool> Exists(int id)
-    {
-        return await _repository.Exists(id);
-    }
+    public async Task<bool> Exists(int id) => await _repository.Exists(id);
 }
