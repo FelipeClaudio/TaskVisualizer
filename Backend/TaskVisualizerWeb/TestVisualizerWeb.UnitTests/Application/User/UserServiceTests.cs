@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Moq;
 using TaskVisualizerWeb.Application;
+using TaskVisualizerWeb.Application.User.Mappers;
 using TaskVisualizerWeb.Contracts.User.Request;
 using TaskVisualizerWeb.Domain.Models.User;
 using UserStatusEnum = TaskVisualizerWeb.Domain.Models.User.UserStatusEnum;
@@ -13,15 +14,10 @@ public sealed class UserServiceTests
     public async System.Threading.Tasks.Task Add_ValidData_ReturnCreatedUser()
     {
         // Arrange
-        var repositoryMock = new Mock<IUserRepository>();
-        var service = new UserService(repositoryMock.Object);
         var userToBeAdded = new CreateUserRequest("Test User", "test@test.com", TaskVisualizerWeb.Contracts.User.Commons.UserStatusEnum.Active);
-        var response = new TaskVisualizerWeb.Domain.Models.User.User
-        {
-            Name = userToBeAdded.Name,
-            Email = userToBeAdded.Email,
-            Status = (UserStatusEnum)userToBeAdded.Status,
-        };
+        var response = userToBeAdded.ToDomain();
+
+        var repositoryMock = new Mock<IUserRepository>();
         repositoryMock
             .Setup(ur => ur.AddAsync(It.Is<TaskVisualizerWeb.Domain.Models.User.User>(u => 
                 u.Name == userToBeAdded.Name && 
@@ -30,10 +26,30 @@ public sealed class UserServiceTests
                 )))
             .ReturnsAsync(response);
 
+        var service = new UserService(repositoryMock.Object);
+
         // Act
         var createdUser = await service.AddAsync(userToBeAdded);
 
         // Assert
         createdUser.Should().BeEquivalentTo(userToBeAdded);
+    }
+
+    [Fact]
+    public async System.Threading.Tasks.Task Exists_ExistingUser_ReturnTrue()
+    {
+        // Arrange
+        var repositoryMock = new Mock<IUserRepository>();
+        repositoryMock
+            .Setup(ur => ur.Exists(123))
+            .ReturnsAsync(true);
+
+        var service = new UserService(repositoryMock.Object);
+
+        // Act
+        var userSearchResult = await service.Exists(123);
+
+        // Assert
+        userSearchResult.Should().BeTrue();
     }
 }

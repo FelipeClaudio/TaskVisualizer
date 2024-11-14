@@ -1,37 +1,29 @@
-﻿using TaskVisualizerWeb.Contracts.Task.Request;
+﻿using TaskVisualizerWeb.Application.Task.Mappers;
+using TaskVisualizerWeb.Application.User;
+using TaskVisualizerWeb.Contracts.Task.Request;
 using TaskVisualizerWeb.Contracts.Task.Response;
 using TaskVisualizerWeb.Domain.Models.Task;
+using TaskVisualizerWeb.Domain.Models.User;
 
 namespace TaskVisualizerWeb.Application.Task;
 
-public class TaskService(ITaskRepository taskRepository) : ITaskService
+public class TaskService(ITaskRepository taskRepository, IUserService userService) : ITaskService
 {
     private readonly ITaskRepository _taskRepository = taskRepository;
+    private readonly IUserService _userService = userService;
 
     public async Task<TaskResponse> AddAsync(TaskCreationRequest taskToBeAdded)
     {
-        var domainTask = new Domain.Models.Task.Task
-        {
-            Name = taskToBeAdded.Name,
-            Description = taskToBeAdded.Description,
-            DueDate = taskToBeAdded.DueDate,
-            Statuses = [new() { Id = 1, ValidTo = null, StatusEnum = (TaskStatusEnum)taskToBeAdded.TaskStatus }],
-            Points = taskToBeAdded.Points,
-            UserId = taskToBeAdded.UserId,
-        };
+        var userExists = await _userService.Exists(taskToBeAdded.UserId);
+
+        if (!userExists)
+            throw new InvalidDataException($"User with id {taskToBeAdded.UserId} not found");
+
+        var domainTask = taskToBeAdded.ToDomain();
 
         var addedTask = await _taskRepository.AddAsync(domainTask);
 
-        var taskResponse = new TaskResponse(
-            addedTask.Id,
-            addedTask.Name,
-            addedTask.Description,
-            addedTask.DueDate,
-            addedTask.Points,
-            (Contracts.Task.Commons.TaskStatusEnum)(addedTask.Statuses.LastOrDefault()?.StatusEnum ?? TaskStatusEnum.NotStarted),
-            addedTask.UserId);
-
-        return taskResponse;
+        return addedTask.ToContract();
     }
 
     public async Task<TaskResponse> GetAsync(int id)
@@ -40,15 +32,6 @@ public class TaskService(ITaskRepository taskRepository) : ITaskService
         if (task is null)
             throw new InvalidDataException($"Task with id '{id}' does not exist");
 
-        var lastStatus = task.Statuses.LastOrDefault();
-
-        return new TaskResponse(
-            task.Id, 
-            task.Name, 
-            task.Description, 
-            task.DueDate, 
-            task.Points, 
-            (Contracts.Task.Commons.TaskStatusEnum)(lastStatus?.StatusEnum ?? TaskStatusEnum.NotStarted), 
-            task.UserId);
+        return task.ToContract();
     }
 }

@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using Moq;
 using TaskVisualizerWeb.Application.Task;
+using TaskVisualizerWeb.Application.Task.Mappers;
+using TaskVisualizerWeb.Application.User;
 using TaskVisualizerWeb.Contracts.Task.Request;
 using TaskVisualizerWeb.Domain.Models.Task;
 
@@ -21,17 +23,7 @@ public sealed class TaskServiceTests
             TaskVisualizerWeb.Contracts.Task.Commons.TaskStatusEnum.InProgress,
             1);
 
-        var response = new TaskVisualizerWeb.Domain.Models.Task.Task
-        {
-            Id = 1,
-            Name = taskToBeAdded.Name,
-            Description = taskToBeAdded.Description,
-            DueDate = taskToBeAdded.DueDate,
-            Statuses = [new() { Id = 1, ValidTo = null, StatusEnum = (TaskStatusEnum)taskToBeAdded.TaskStatus }],
-            Points = taskToBeAdded.Points,
-            UserId = taskToBeAdded.UserId,
-        };
-
+        var response = taskToBeAdded.ToDomain();
         repositoryMock.Setup(tr => tr.AddAsync(It.Is<TaskVisualizerWeb.Domain.Models.Task.Task>(t =>
             t.Name == taskToBeAdded.Name &&
             t.Description == taskToBeAdded.Description &&
@@ -41,7 +33,11 @@ public sealed class TaskServiceTests
             t.Statuses[0].StatusEnum == (TaskStatusEnum)taskToBeAdded.TaskStatus)))
             .ReturnsAsync(response);
 
-        var service = new TaskService(repositoryMock.Object);
+        var userServiceMock = new Mock<IUserService>();
+        userServiceMock.Setup(u => u.Exists(taskToBeAdded.UserId))
+            .ReturnsAsync(true);
+
+        var service = new TaskService(repositoryMock.Object, userServiceMock.Object);
 
         // Act
         var createdTask = await service.AddAsync(taskToBeAdded);

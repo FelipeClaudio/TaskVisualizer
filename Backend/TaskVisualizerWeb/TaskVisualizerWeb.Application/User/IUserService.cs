@@ -7,5 +7,6 @@ public interface IUserService
 {
     Task<List<UserResponse>> GetAllAsync();
     Task<UserResponse> GetAsync(int id);
-    Task<UserResponse> AddAsync(CreateUserRequest User);
+    Task<UserResponse> AddAsync(CreateUserRequest request);
+    Task<bool> Exists(int id);
 }

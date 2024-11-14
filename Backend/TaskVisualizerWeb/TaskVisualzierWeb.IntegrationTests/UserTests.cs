@@ -4,14 +4,9 @@ using TaskVisualizerWeb.Contracts.User.Commons;
 using TaskVisualizerWeb.Contracts.User.Request;
 
 namespace TaskVisualzierWeb.IntegrationTests;
-public sealed class UserTests : BaseIntegrationTest
+public sealed class UserTests(IntegrationTestWebAppFactory factory) : BaseIntegrationTest(factory)
 {
-    private readonly IntegrationTestWebAppFactory _factory;
-
-    public UserTests(IntegrationTestWebAppFactory factory) : base(factory)
-    {
-        _factory = factory;
-    }
+    private readonly IntegrationTestWebAppFactory _factory = factory;
 
     [Fact]
     public async Task CreateUser_ValidData_ShouldReturnCreatedUser()
