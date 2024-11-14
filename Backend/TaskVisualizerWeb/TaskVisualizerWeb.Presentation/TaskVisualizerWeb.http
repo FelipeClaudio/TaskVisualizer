@@ -40,3 +40,8 @@ Accept-Language: en-US,en;q=0.5
 
 GET {{TaskVisualizerWeb_HostAddress}}/tasks/1
 Accept: application/json
+
+### 
+
+GET {{TaskVisualizerWeb_HostAddress}}/tasks/users/1
+Accept: application/json

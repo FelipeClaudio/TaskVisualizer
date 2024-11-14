@@ -3,4 +3,5 @@ public interface ITaskRepository
 {
     Task<Task> AddAsync(Task task);
     Task<Task?> GetAsync(int id);
+    Task<List<Task>?> GetAllForUserAsync(int userId);
 }

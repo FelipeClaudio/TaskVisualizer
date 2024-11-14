@@ -26,6 +26,23 @@ public class TaskService(ITaskRepository taskRepository, IUserService userServic
         return addedTask.ToContract();
     }
 
+    public async Task<List<TaskResponse>> GetAllForUserAsync(int userId)
+    {
+        var userExists = await _userService.Exists(userId);
+
+        if (!userExists)
+            throw new InvalidDataException($"User with id {userId} not found");
+
+        var userTasks = await _taskRepository.GetAllForUserAsync(userId);
+
+        if (userTasks is null)
+            return [];
+
+        return userTasks
+            .Select(task => task.ToContract())
+            .ToList();
+    }
+
     public async Task<TaskResponse> GetAsync(int id)
     {
         var task = await _taskRepository.GetAsync(id);

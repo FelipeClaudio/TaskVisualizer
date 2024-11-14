@@ -15,6 +15,9 @@ public class TasksController(ILogger<UsersController> logger, ITaskService taskS
     [HttpGet("{id}")]
     public async Task<TaskResponse> GetAsync(int id) => await _taskService.GetAsync(id);
 
+    [HttpGet("users/{userId}")]
+    public async Task<List<TaskResponse>> GetAllForUserAsync(int userId) => await _taskService.GetAllForUserAsync(userId);
+
     [HttpPost]
     public async Task<TaskResponse> AddAsync(TaskCreationRequest task) => await _taskService.AddAsync(task);
 }
