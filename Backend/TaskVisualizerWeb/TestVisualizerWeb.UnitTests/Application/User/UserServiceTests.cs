@@ -26,7 +26,7 @@ public sealed class UserServiceTests
                 )))
             .ReturnsAsync(response);
 
-        var service = new UserService(repositoryMock.Object);
+        var service = new UserService(repositoryMock.Object, new UserValidator());
 
         // Act
         var createdUser = await service.AddAsync(userToBeAdded);
@@ -44,7 +44,7 @@ public sealed class UserServiceTests
             .Setup(ur => ur.Exists(123))
             .ReturnsAsync(true);
 
-        var service = new UserService(repositoryMock.Object);
+        var service = new UserService(repositoryMock.Object, new UserValidator());
 
         // Act
         var userSearchResult = await service.Exists(123);

@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentValidation;
 using Moq;
 using TaskVisualizerWeb.Application.Task;
 using TaskVisualizerWeb.Application.Task.Mappers;
@@ -37,7 +38,7 @@ public sealed class TaskServiceTests
         userServiceMock.Setup(u => u.Exists(taskToBeAdded.UserId))
             .ReturnsAsync(true);
 
-        var service = new TaskService(repositoryMock.Object, userServiceMock.Object);
+        var service = new TaskService(repositoryMock.Object, new TaskValidator(), userServiceMock.Object);
 
         // Act
         var createdTask = await service.AddAsync(taskToBeAdded);

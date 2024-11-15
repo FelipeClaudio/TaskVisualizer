@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using TaskVisualizerWeb.Application;
 using TaskVisualizerWeb.Application.Task;
@@ -24,10 +25,15 @@ public class Program
         var configValue = builder.Configuration.GetValue<string>("ConnectionStrings:WebApiDatabase");
 
         builder.Services.AddDbContext<EfCorePostgreContext>(options => options.UseNpgsql(configValue));
+
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IUserRepository, UserRepository>();
+        builder.Services.AddScoped<IValidator<User>, UserValidator>();
+
         builder.Services.AddScoped<ITaskService, TaskService>();
         builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+        builder.Services.AddScoped<IValidator<Domain.Models.Task.Task>, TaskValidator>();
+
         var app = builder.Build();
 
         app.UseCors(builder => builder
