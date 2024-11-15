@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System.Threading.Tasks;
 using TaskVisualizerWeb.Application.Task.Mappers;
 using TaskVisualizerWeb.Application.User;
 using TaskVisualizerWeb.Contracts.Task.Request;
@@ -52,5 +53,16 @@ public class TaskService(ITaskRepository taskRepository, IValidator<Domain.Model
             throw new InvalidDataException($"Task with id '{id}' does not exist");
 
         return task.ToContract();
+    }
+
+    public async Task<TaskResponse> UpdateTaskStatus(TaskStatusUpdateRequest taskStatusUpdateRequest)
+    {
+        var taskExists = await _taskRepository.ExistsAsync(taskStatusUpdateRequest.Id);
+        if (!taskExists)
+            throw new InvalidDataException($"Task with id '{taskStatusUpdateRequest.Id}' does not exist");
+
+        var updatedTask = await _taskRepository.UpdateAsync(taskStatusUpdateRequest.Id, (TaskStatusEnum)taskStatusUpdateRequest.TaskStatus);
+
+        return updatedTask.ToContract();
     }
 }

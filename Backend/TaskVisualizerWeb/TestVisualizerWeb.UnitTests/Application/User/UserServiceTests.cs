@@ -36,12 +36,12 @@ public sealed class UserServiceTests
     }
 
     [Fact]
-    public async System.Threading.Tasks.Task Exists_ExistingUser_ReturnTrue()
+    public async System.Threading.Tasks.Task ExistsAsync_ExistingUser_ReturnTrue()
     {
         // Arrange
         var repositoryMock = new Mock<IUserRepository>();
         repositoryMock
-            .Setup(ur => ur.Exists(123))
+            .Setup(ur => ur.ExistsAsync(123))
             .ReturnsAsync(true);
 
         var service = new UserService(repositoryMock.Object, new UserValidator());

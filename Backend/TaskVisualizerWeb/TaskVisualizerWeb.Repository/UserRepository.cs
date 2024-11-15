@@ -19,5 +19,5 @@ public class UserRepository(EfCorePostgreContext context) : IUserRepository
 
     public async Task<List<User>> GetAllAsync() => await _dbContext.Users.ToListAsync();
 
-    public async Task<bool> Exists(int id) => await _dbContext.Users.AnyAsync(u => u.Id == id);
+    public async Task<bool> ExistsAsync(int id) => await _dbContext.Users.AnyAsync(u => u.Id == id);
 }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskVisualizerWeb.Application;
 using TaskVisualizerWeb.Application.Task;
 using TaskVisualizerWeb.Application.User;
+using TaskVisualizerWeb.Domain;
 using TaskVisualizerWeb.Domain.Models.Task;
 using TaskVisualizerWeb.Domain.Models.User;
 using TaskVisualizerWeb.Repository;
@@ -33,6 +34,8 @@ public class Program
         builder.Services.AddScoped<ITaskService, TaskService>();
         builder.Services.AddScoped<ITaskRepository, TaskRepository>();
         builder.Services.AddScoped<IValidator<Domain.Models.Task.Task>, TaskValidator>();
+
+        builder.Services.AddScoped<IDateProvider, DateProvider>();
 
         var app = builder.Build();
 

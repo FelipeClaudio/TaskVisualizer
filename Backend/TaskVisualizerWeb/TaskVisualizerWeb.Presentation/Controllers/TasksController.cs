@@ -20,4 +20,7 @@ public class TasksController(ILogger<UsersController> logger, ITaskService taskS
 
     [HttpPost]
     public async Task<TaskResponse> AddAsync(TaskCreationRequest task) => await _taskService.AddAsync(task);
+
+    [HttpPatch]
+    public async Task<TaskResponse> UpdateTaskStatus(TaskStatusUpdateRequest taskToBeUpdated) => await _taskService.UpdateTaskStatus(taskToBeUpdated);
 }

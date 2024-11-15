@@ -19,4 +19,17 @@ public class TaskRepository(EfCorePostgreContext context) : ITaskRepository
 
     public async Task<List<Domain.Models.Task.Task>?> GetAllForUserAsync(int userId) => 
         await _dbContext.Tasks.Where(t => t.UserId == userId).ToListAsync();
+
+    public async Task<bool> ExistsAsync(int id) => await _dbContext.Tasks.AnyAsync(u => u.Id == id);
+
+    public async Task<Domain.Models.Task.Task> UpdateAsync(int taskId, TaskStatusEnum taskStatus)
+    {
+        var dbTask = await _dbContext.Tasks.SingleAsync(t => t.Id == taskId);
+        dbTask.Statuses.Last().ValidTo = DateTime.UtcNow;
+        dbTask.Statuses.Add(new TaskHistory { StatusEnum = taskStatus });
+
+        _dbContext.SaveChanges();
+
+        return dbTask;
+    }
 }

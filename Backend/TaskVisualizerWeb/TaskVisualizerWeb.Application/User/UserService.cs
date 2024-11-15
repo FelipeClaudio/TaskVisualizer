@@ -37,5 +37,5 @@ public class UserService(IUserRepository repository, IValidator<Domain.Models.Us
        return users.Select(user => user.ToContract()).ToList();
     }
 
-    public async Task<bool> Exists(int id) => await _repository.Exists(id);
+    public async Task<bool> Exists(int id) => await _repository.ExistsAsync(id);
 }

@@ -30,9 +30,9 @@ Accept-Language: en-US,en;q=0.5
 {
   "name": "First Task",
   "description": "Every big thing start from something small",
-  "dueDate": "2024-11-12T22:06:55.180Z",
+  "dueDate": "2024-11-16T22:06:55.180Z",
   "points": 13,
-  "taskStatus": 0,
+  "taskStatus": 2,
   "userId": 1
 }
 

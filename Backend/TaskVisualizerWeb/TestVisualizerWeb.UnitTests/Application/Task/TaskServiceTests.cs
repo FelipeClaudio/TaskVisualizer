@@ -1,22 +1,23 @@
 ﻿using FluentAssertions;
-using FluentValidation;
 using Moq;
 using TaskVisualizerWeb.Application.Task;
 using TaskVisualizerWeb.Application.Task.Mappers;
 using TaskVisualizerWeb.Application.User;
 using TaskVisualizerWeb.Contracts.Task.Request;
+using TaskVisualizerWeb.Domain;
 using TaskVisualizerWeb.Domain.Models.Task;
 
 namespace TestVisualizerWeb.UnitTests.Application.Task;
 
 public sealed class TaskServiceTests
 {
-    [Fact]
-    public async System.Threading.Tasks.Task CreateTask_ValidInput_ShouldCreateTask()
+    private TaskCreationRequest _taskToBeAdded;
+    private Mock<ITaskRepository> _repositoryMock;
+    private Mock<IUserService> _userServiceMock;
+
+    public TaskServiceTests()
     {
-        // Arrange
-        var repositoryMock = new Mock<ITaskRepository>();
-        var taskToBeAdded = new TaskCreationRequest(
+        _taskToBeAdded = new TaskCreationRequest(
             "Create task visualizer app",
             "Creation of this nice app",
             new DateTime(2025, 03, 01),
@@ -24,26 +25,61 @@ public sealed class TaskServiceTests
             TaskVisualizerWeb.Contracts.Task.Commons.TaskStatusEnum.InProgress,
             1);
 
-        var response = taskToBeAdded.ToDomain();
-        repositoryMock.Setup(tr => tr.AddAsync(It.Is<TaskVisualizerWeb.Domain.Models.Task.Task>(t =>
-            t.Name == taskToBeAdded.Name &&
-            t.Description == taskToBeAdded.Description &&
-            t.DueDate == taskToBeAdded.DueDate &&
-            t.UserId == taskToBeAdded.UserId &&
-            t.Points == taskToBeAdded.Points &&
-            t.Statuses[0].StatusEnum == (TaskStatusEnum)taskToBeAdded.TaskStatus)))
-            .ReturnsAsync(response);
+        _repositoryMock = new Mock<ITaskRepository>();
+        _repositoryMock.Setup(tr => tr.AddAsync(It.Is<TaskVisualizerWeb.Domain.Models.Task.Task>(t =>
+            t.Name                      ==  _taskToBeAdded.Name &&
+            t.Description               ==  _taskToBeAdded.Description &&
+            t.DueDate                   ==  _taskToBeAdded.DueDate &&
+            t.UserId                    ==  _taskToBeAdded.UserId &&
+            t.Points                    ==  _taskToBeAdded.Points &&
+            t.Statuses[0].StatusEnum    ==  (TaskStatusEnum)_taskToBeAdded.TaskStatus)))
+        .ReturnsAsync(_taskToBeAdded.ToDomain());
 
-        var userServiceMock = new Mock<IUserService>();
-        userServiceMock.Setup(u => u.Exists(taskToBeAdded.UserId))
+        _userServiceMock = new Mock<IUserService>();
+        _userServiceMock.Setup(u => u.Exists(_taskToBeAdded.UserId))
             .ReturnsAsync(true);
+    }
 
-        var service = new TaskService(repositoryMock.Object, new TaskValidator(), userServiceMock.Object);
+    [Fact]
+    public async System.Threading.Tasks.Task CreateTask_ValidInput_ShouldCreateTask()
+    {
+        // Arrange
+        var service = new TaskService(_repositoryMock.Object, new TaskValidator(new DateProvider()), _userServiceMock.Object);
 
         // Act
-        var createdTask = await service.AddAsync(taskToBeAdded);
+        var createdTask = await service.AddAsync(_taskToBeAdded);
 
         // Assert
-        createdTask.Should().BeEquivalentTo(taskToBeAdded);
+        createdTask.Should().BeEquivalentTo(_taskToBeAdded);
+    }
+
+    [Fact]
+    public async System.Threading.Tasks.Task CreateTask_NonExistingUser_ShouldReturnError()
+    {
+        // Arrange
+        var service = new TaskService(_repositoryMock.Object, new TaskValidator(new DateProvider()), _userServiceMock.Object);
+        _taskToBeAdded = _taskToBeAdded with { UserId = 5 };
+
+        // Act
+        Func<Task<TaskVisualizerWeb.Contracts.Task.Response.TaskResponse>> act = async () => await service.AddAsync(_taskToBeAdded);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidDataException>();
+    }
+
+    [Fact]
+    public async System.Threading.Tasks.Task UpdateTaskStatus_ValidInput_ShouldUpdateTaskStatus()
+    {
+        // Arrange
+        var service = new TaskService(_repositoryMock.Object, new TaskValidator(new DateProvider()), _userServiceMock.Object);
+        var createdTask = await service.AddAsync(_taskToBeAdded);
+        var expectedStatus = TaskVisualizerWeb.Contracts.Task.Commons.TaskStatusEnum.Done;
+        var taskStatusUpdateRequest = new TaskStatusUpdateRequest(createdTask.Id, expectedStatus);
+
+        // Act
+        var updatedTask = await service.UpdateTaskStatus(taskStatusUpdateRequest);
+
+        // Assert
+        updatedTask.TaskStatus.Should().Be(expectedStatus);
     }
 }
