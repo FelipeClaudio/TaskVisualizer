@@ -72,9 +72,15 @@ public sealed class TaskServiceTests
     {
         // Arrange
         var service = new TaskService(_repositoryMock.Object, new TaskValidator(new DateProvider()), _userServiceMock.Object);
-        var createdTask = await service.AddAsync(_taskToBeAdded);
+        var createdTask = await service.AddAsync(_taskToBeAdded) with { Id = 1 };
         var expectedStatus = TaskVisualizerWeb.Contracts.Task.Commons.TaskStatusEnum.Done;
         var taskStatusUpdateRequest = new TaskStatusUpdateRequest(createdTask.Id, expectedStatus);
+
+        _repositoryMock.Setup(r => r.ExistsAsync(createdTask.Id)).ReturnsAsync(true);
+        var updateResult = _taskToBeAdded.ToDomain();
+        updateResult.Statuses.Add(new TaskHistory { StatusEnum = (TaskStatusEnum)expectedStatus, Id = 1 });
+        _repositoryMock.Setup(r => r.UpdateAsync(createdTask.Id, (TaskStatusEnum)expectedStatus))
+            .ReturnsAsync(updateResult);
 
         // Act
         var updatedTask = await service.UpdateTaskStatus(taskStatusUpdateRequest);
