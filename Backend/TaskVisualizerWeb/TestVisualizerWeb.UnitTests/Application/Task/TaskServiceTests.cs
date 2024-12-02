@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using FizzWare.NBuilder;
+using FluentAssertions;
 using Moq;
 using TaskVisualizerWeb.Application.Task;
 using TaskVisualizerWeb.Application.Task.Mappers;
@@ -54,7 +55,7 @@ public sealed class TaskServiceTests
     }
 
     [Fact]
-    public async System.Threading.Tasks.Task CreateTask_NonExistingUser_ShouldReturnError()
+    public async System.Threading.Tasks.Task CreateTask_NonExistingUser_ShouldThrowException()
     {
         // Arrange
         var service = new TaskService(_repositoryMock.Object, new TaskValidator(new DateProvider()), _userServiceMock.Object);
@@ -87,5 +88,101 @@ public sealed class TaskServiceTests
 
         // Assert
         updatedTask.TaskStatus.Should().Be(expectedStatus);
+    }
+
+    [Fact]
+    public async System.Threading.Tasks.Task GetAsync_ExistingTask_ShouldReturnTask()
+    {
+        // Arrange
+        const int maxListSize = 5;
+        var random = new Random();
+        int taskId = random.Next(0, maxListSize);
+        var tasksStub = Builder<TaskVisualizerWeb.Domain.Models.Task.Task>
+            .CreateListOfSize(maxListSize)
+            .Build();
+        _repositoryMock.Setup(r => r.GetAsync(taskId))
+            .ReturnsAsync(tasksStub[taskId]);
+
+        var service = new TaskService(_repositoryMock.Object, new TaskValidator(new DateProvider()), _userServiceMock.Object);
+
+        // Act
+        var result = await service.GetAsync(taskId);
+
+        // Assert
+        result.Should().Be(tasksStub[taskId].ToContract());
+    }
+
+    [Fact]
+    public async System.Threading.Tasks.Task GetAsync_NonExistingTask_ShouldThrowException()
+    {
+        // Arrange
+        const int maxListSize = 5;
+        var random = new Random();
+        int taskId = random.Next(0, maxListSize);
+        var tasksStub = Builder<TaskVisualizerWeb.Domain.Models.Task.Task>
+            .CreateListOfSize(maxListSize)
+            .Build();
+        _repositoryMock.Setup(r => r.GetAsync(taskId))
+            .ReturnsAsync(tasksStub[taskId]);
+
+        var service = new TaskService(_repositoryMock.Object, new TaskValidator(new DateProvider()), _userServiceMock.Object);
+
+        // Act
+        Func<Task<TaskVisualizerWeb.Contracts.Task.Response.TaskResponse>> act = async () => await service.GetAsync(maxListSize + 1);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidDataException>();
+    }
+
+    [Fact]
+    public async System.Threading.Tasks.Task GetAllForUserAsync_ValidUser_ShouldReturnAllTasksForGivenUser()
+    {
+        // Arrange
+        const int userId = 1;
+        const int maxListSize = 5;
+        var random = new Random();
+        int sectionSize = random.Next(1, maxListSize);
+        var tasksStub = Builder<TaskVisualizerWeb.Domain.Models.Task.Task>
+            .CreateListOfSize(maxListSize)
+            .Section(0, sectionSize)
+            .With(t => t.UserId = userId)
+            .Build().ToList();
+        _repositoryMock.Setup(r => r.GetAllForUserAsync(userId))
+            .ReturnsAsync(tasksStub.Where(t => t.UserId == userId).ToList());
+
+        var service = new TaskService(_repositoryMock.Object, new TaskValidator(new DateProvider()), _userServiceMock.Object);
+
+        // Act
+        var result = await service.GetAllForUserAsync(userId);
+
+        // Assert
+        result.Should().HaveCount(sectionSize + 1);
+        result.All(x => x.UserId == userId).Should().BeTrue();
+    }
+
+    [Fact]
+    public async System.Threading.Tasks.Task GetAllForUserAsync_ValidUserWithNoTask_ShouldReturnEmptyResponse()
+    {
+        // Arrange
+        var service = new TaskService(_repositoryMock.Object, new TaskValidator(new DateProvider()), _userServiceMock.Object);
+
+        // Act
+        var result = await service.GetAllForUserAsync(1);
+
+        // Assert
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async System.Threading.Tasks.Task GetAllForUserAsync_NonExistingUser_ShouldThrowException()
+    {
+        // Arrange
+        var service = new TaskService(_repositoryMock.Object, new TaskValidator(new DateProvider()), _userServiceMock.Object);
+
+        // Act
+        Func<Task<TaskVisualizerWeb.Contracts.Task.Response.TaskResponse>> act = async () => await service.GetAsync(_taskToBeAdded.UserId + 1);
+
+        // Assert
+        await act.Should().ThrowAsync<InvalidDataException>();
     }
 }
