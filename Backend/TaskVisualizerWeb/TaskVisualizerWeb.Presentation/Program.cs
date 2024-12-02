@@ -6,6 +6,7 @@ using TaskVisualizerWeb.Application.User;
 using TaskVisualizerWeb.Domain;
 using TaskVisualizerWeb.Domain.Models.Task;
 using TaskVisualizerWeb.Domain.Models.User;
+using TaskVisualizerWeb.Presentation.Middlewares;
 using TaskVisualizerWeb.Repository;
 
 namespace TaskVisualizerWeb.Presentation;
@@ -38,6 +39,8 @@ public class Program
         builder.Services.AddScoped<IDateProvider, DateProvider>();
 
         var app = builder.Build();
+
+        app.UseMiddleware<InvalidDataExceptionMiddleware>();
 
         app.UseCors(builder => builder
              .AllowAnyOrigin()

@@ -38,4 +38,17 @@ public sealed class UserTests(IntegrationTestWebAppFactory factory) : BaseIntegr
         // Assert
         createdUser.Should().BeEquivalentTo(user);
     }
+
+    [Fact]
+    public async Task GetUser_InexistentUser_ShouldReturnNotFoundError()
+    {
+        // Arrange
+        var client = _factory.CreateClient();
+
+        // Act
+        var result = await client.GetAsync("users/1");
+
+        // Assert
+        result.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+    }
 }
