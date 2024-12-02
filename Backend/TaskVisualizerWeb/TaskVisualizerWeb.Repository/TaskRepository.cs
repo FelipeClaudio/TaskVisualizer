@@ -15,10 +15,15 @@ public class TaskRepository(EfCorePostgreContext context) : ITaskRepository
         return createdTask.Entity;
     }
 
-    public async Task<Domain.Models.Task.Task?> GetAsync(int id) => await _dbContext.Tasks.SingleOrDefaultAsync(t => t.Id == id);
+    public async Task<Domain.Models.Task.Task?> GetAsync(int id) => await _dbContext.Tasks
+        .Include(t => t.Statuses)
+        .SingleOrDefaultAsync(t => t.Id == id);
 
     public async Task<List<Domain.Models.Task.Task>?> GetAllForUserAsync(int userId) => 
-        await _dbContext.Tasks.Where(t => t.UserId == userId).ToListAsync();
+        await _dbContext.Tasks
+        .Include(t => t.Statuses)
+        .Where(t => t.UserId == userId)
+        .ToListAsync();
 
     public async Task<bool> ExistsAsync(int id) => await _dbContext.Tasks.AnyAsync(u => u.Id == id);
 
