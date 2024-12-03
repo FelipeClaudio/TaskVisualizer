@@ -53,4 +53,41 @@ public sealed class UserTests(IntegrationTestWebAppFactory factory) : BaseIntegr
         // Assert
         result.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
     }
+
+    [Fact]
+    public async Task GetAllAsync_MultipleUser_ShouldReturnAllUserOnDatabase()
+    {
+        // Arrange
+        var client = _factory.CreateClient();
+        const int numberOfUsers = 4;
+        var taskList = new List<Task>();
+
+        for (int i = 0; i < numberOfUsers; i++)
+        {
+            var user = new CreateUserRequest($"Test user{i}", $"test{i}@test.com", UserStatusEnum.Active);
+            taskList.Add(client.PostAsJsonAsync("/users", user));
+        }
+        await Task.WhenAll(taskList);
+
+        // Act
+        var result = await client.GetAsync("users");
+        var userResponse = await result.Content.ReadFromJsonAsync<List<UserResponse>>();
+
+        // Assert
+        userResponse.Should().HaveCount(numberOfUsers);
+    }
+
+    [Fact]
+    public async Task GetAllAsync_NoUser_ShouldReturnEmptyResult()
+    {
+        // Arrange
+        var client = _factory.CreateClient();
+
+        // Act
+        var result = await client.GetAsync("users");
+        var userResponse = await result.Content.ReadFromJsonAsync<List<UserResponse>>();
+
+        // Assert
+        userResponse.Should().BeEmpty();
+    }
 }

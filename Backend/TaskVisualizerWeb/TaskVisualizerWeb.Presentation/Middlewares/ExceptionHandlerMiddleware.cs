@@ -3,11 +3,11 @@ using TaskVisualizerWeb.Domain.Exceptions;
 
 namespace TaskVisualizerWeb.Presentation.Middlewares
 {
-    public class ExcpetionHandlerMiddleware
+    public class ExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
 
-        public ExcpetionHandlerMiddleware(RequestDelegate next)
+        public ExceptionHandlerMiddleware(RequestDelegate next)
         {
             _next = next;
         }
