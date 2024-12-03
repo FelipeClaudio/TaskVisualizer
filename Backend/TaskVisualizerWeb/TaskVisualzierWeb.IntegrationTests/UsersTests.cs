@@ -5,7 +5,8 @@ using TaskVisualizerWeb.Contracts.User.Request;
 using TaskVisualizerWeb.Contracts.User.Response;
 
 namespace TaskVisualzierWeb.IntegrationTests;
-public sealed class UserTests(IntegrationTestWebAppFactory factory) : BaseIntegrationTest(factory)
+
+public sealed class UsersTests(IntegrationTestWebAppFactory factory) : BaseIntegrationTest(factory)
 {
     private readonly IntegrationTestWebAppFactory _factory = factory;
 

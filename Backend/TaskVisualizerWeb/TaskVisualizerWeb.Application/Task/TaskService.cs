@@ -38,7 +38,7 @@ public class TaskService(ITaskRepository taskRepository, IValidator<Domain.Model
 
         var userTasks = await _taskRepository.GetAllForUserAsync(userId);
 
-        if (userTasks is null)
+        if (userTasks is null || userTasks.Count == 0)
             return [];
 
         return userTasks

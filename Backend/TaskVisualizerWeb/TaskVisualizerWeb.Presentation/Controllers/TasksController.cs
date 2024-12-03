@@ -16,7 +16,16 @@ public class TasksController(ILogger<UsersController> logger, ITaskService taskS
     public async Task<TaskResponse> GetAsync(int id) => await _taskService.GetAsync(id);
 
     [HttpGet("users/{userId}")]
-    public async Task<List<TaskResponse>> GetAllForUserAsync(int userId) => await _taskService.GetAllForUserAsync(userId);
+    [ProducesResponseType<List<TaskResponse>>(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllForUserAsync(int userId)
+    {
+        var result = await _taskService.GetAllForUserAsync(userId);
+
+        if (result is null || result.Count == 0)
+            return NoContent();
+
+        return Ok(result);
+    }
 
     [HttpPost]
     public async Task<TaskResponse> AddAsync(TaskCreationRequest task) => await _taskService.AddAsync(task);
