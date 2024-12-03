@@ -2,6 +2,7 @@
 using TaskVisualizerWeb.Application.User;
 using TaskVisualizerWeb.Application.User.Mappers;
 using TaskVisualizerWeb.Contracts.User.Response;
+using TaskVisualizerWeb.Domain.Exceptions;
 using TaskVisualizerWeb.Domain.Models.User;
 
 namespace TaskVisualizerWeb.Application;
@@ -25,7 +26,7 @@ public class UserService(IUserRepository repository, IValidator<Domain.Models.Us
     {
         var user = await _repository.GetAsync(id);
         if (user is null)
-            throw new InvalidDataException($"User with id '{id}' does not exist");
+            throw new ResourceNotFoundException($"User with id '{id}' does not exist");
 
         return user.ToContract();
     }

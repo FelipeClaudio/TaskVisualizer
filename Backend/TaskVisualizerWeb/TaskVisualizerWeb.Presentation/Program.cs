@@ -40,7 +40,7 @@ public class Program
 
         var app = builder.Build();
 
-        app.UseMiddleware<InvalidDataExceptionMiddleware>();
+        app.UseMiddleware<ExcpetionHandlerMiddleware>();
 
         app.UseCors(builder => builder
              .AllowAnyOrigin()

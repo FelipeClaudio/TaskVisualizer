@@ -6,6 +6,7 @@ using TaskVisualizerWeb.Application.Task.Mappers;
 using TaskVisualizerWeb.Application.User;
 using TaskVisualizerWeb.Contracts.Task.Request;
 using TaskVisualizerWeb.Domain;
+using TaskVisualizerWeb.Domain.Exceptions;
 using TaskVisualizerWeb.Domain.Models.Task;
 
 namespace TestVisualizerWeb.UnitTests.Application.Task;
@@ -65,7 +66,7 @@ public sealed class TaskServiceTests
         Func<Task<TaskVisualizerWeb.Contracts.Task.Response.TaskResponse>> act = async () => await service.AddAsync(_taskToBeAdded);
 
         // Assert
-        await act.Should().ThrowAsync<InvalidDataException>();
+        await act.Should().ThrowAsync<ResourceNotFoundException>();
     }
 
     [Fact]
@@ -131,7 +132,7 @@ public sealed class TaskServiceTests
         Func<Task<TaskVisualizerWeb.Contracts.Task.Response.TaskResponse>> act = async () => await service.GetAsync(maxListSize + 1);
 
         // Assert
-        await act.Should().ThrowAsync<InvalidDataException>();
+        await act.Should().ThrowAsync<ResourceNotFoundException>();
     }
 
     [Fact]
@@ -183,6 +184,6 @@ public sealed class TaskServiceTests
         Func<Task<TaskVisualizerWeb.Contracts.Task.Response.TaskResponse>> act = async () => await service.GetAsync(_taskToBeAdded.UserId + 1);
 
         // Assert
-        await act.Should().ThrowAsync<InvalidDataException>();
+        await act.Should().ThrowAsync<ResourceNotFoundException>();
     }
 }

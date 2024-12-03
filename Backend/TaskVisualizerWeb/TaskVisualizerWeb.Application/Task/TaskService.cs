@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using System.Threading.Tasks;
 using TaskVisualizerWeb.Application.Task.Mappers;
 using TaskVisualizerWeb.Application.User;
 using TaskVisualizerWeb.Contracts.Task.Request;
 using TaskVisualizerWeb.Contracts.Task.Response;
+using TaskVisualizerWeb.Domain.Exceptions;
 using TaskVisualizerWeb.Domain.Models.Task;
 
 namespace TaskVisualizerWeb.Application.Task;
@@ -19,7 +19,7 @@ public class TaskService(ITaskRepository taskRepository, IValidator<Domain.Model
         var userExists = await _userService.Exists(taskToBeAdded.UserId);
 
         if (!userExists)
-            throw new InvalidDataException($"User with id {taskToBeAdded.UserId} not found");
+            throw new ResourceNotFoundException($"User with id {taskToBeAdded.UserId} not found");
 
         var domainTask = taskToBeAdded.ToDomain();
         await _validator.ValidateAndThrowAsync(domainTask);
@@ -34,7 +34,7 @@ public class TaskService(ITaskRepository taskRepository, IValidator<Domain.Model
         var userExists = await _userService.Exists(userId);
 
         if (!userExists)
-            throw new InvalidDataException($"User with id {userId} not found");
+            throw new ResourceNotFoundException($"User with id {userId} not found");
 
         var userTasks = await _taskRepository.GetAllForUserAsync(userId);
 
@@ -50,7 +50,7 @@ public class TaskService(ITaskRepository taskRepository, IValidator<Domain.Model
     {
         var task = await _taskRepository.GetAsync(id);
         if (task is null)
-            throw new InvalidDataException($"Task with id '{id}' does not exist");
+            throw new ResourceNotFoundException($"Task with id '{id}' does not exist");
 
         return task.ToContract();
     }
@@ -59,7 +59,7 @@ public class TaskService(ITaskRepository taskRepository, IValidator<Domain.Model
     {
         var taskExists = await _taskRepository.ExistsAsync(taskStatusUpdateRequest.Id);
         if (!taskExists)
-            throw new InvalidDataException($"Task with id '{taskStatusUpdateRequest.Id}' does not exist");
+            throw new ResourceNotFoundException($"Task with id '{taskStatusUpdateRequest.Id}' does not exist");
 
         var updatedTask = await _taskRepository.UpdateAsync(taskStatusUpdateRequest.Id, (TaskStatusEnum)taskStatusUpdateRequest.TaskStatus);
 

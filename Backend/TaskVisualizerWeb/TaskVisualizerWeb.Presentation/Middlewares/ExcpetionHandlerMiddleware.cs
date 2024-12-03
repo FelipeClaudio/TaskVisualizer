@@ -1,12 +1,13 @@
 ﻿using System.Net;
+using TaskVisualizerWeb.Domain.Exceptions;
 
 namespace TaskVisualizerWeb.Presentation.Middlewares
 {
-    public class InvalidDataExceptionMiddleware
+    public class ExcpetionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
 
-        public InvalidDataExceptionMiddleware(RequestDelegate next)
+        public ExcpetionHandlerMiddleware(RequestDelegate next)
         {
             _next = next;
         }
@@ -15,12 +16,16 @@ namespace TaskVisualizerWeb.Presentation.Middlewares
         {
             try
             {
-                await _next(context); // Call the next middleware in the pipeline
+                await _next(context);
             }
-            catch (InvalidDataException ex)
+            catch (Exception ex)
             {
-                // Handle InvalidDataException
-                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                var statusCode = (int)HttpStatusCode.InternalServerError;
+
+                if (ex is ResourceNotFoundException)
+                    statusCode = (int)HttpStatusCode.NotFound;
+
+                context.Response.StatusCode = statusCode;
                 context.Response.ContentType = "application/json";
 
                 var errorResponse = new
