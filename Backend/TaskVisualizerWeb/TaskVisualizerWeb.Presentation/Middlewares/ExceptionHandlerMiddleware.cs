@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using FluentValidation;
+using System.Net;
 using TaskVisualizerWeb.Domain.Exceptions;
 
 namespace TaskVisualizerWeb.Presentation.Middlewares
@@ -24,6 +25,9 @@ namespace TaskVisualizerWeb.Presentation.Middlewares
 
                 if (ex is ResourceNotFoundException)
                     statusCode = (int)HttpStatusCode.NotFound;
+
+                if (ex is ValidationException)
+                    statusCode = (int)HttpStatusCode.BadRequest;
 
                 context.Response.StatusCode = statusCode;
                 context.Response.ContentType = "application/json";

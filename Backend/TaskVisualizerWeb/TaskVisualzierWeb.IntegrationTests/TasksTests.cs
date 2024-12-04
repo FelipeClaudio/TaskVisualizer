@@ -18,20 +18,21 @@ public sealed class TasksTests(IntegrationTestWebAppFactory factory) : BaseInteg
     private IList<TaskVisualizerWeb.Domain.Models.Task.Task> _tasks;
 
     [Fact]
-    public async Task GetAsync_ValidTask_ShouldReturnTask()
+    public async Task GetAsync_ExistingTask_ShouldReturnTasks()
     {
         // Arrange
         await SeedUsersAsync();
         await SeedTasksForUserAsync(_user.Id);
         var client = _factory.CreateClient();
+        var expectedTask = _tasks[1];
 
         // Act
-        var result = await client.GetAsync($"/tasks/{_tasks[1].Id}");
+        var result = await client.GetAsync($"/tasks/{expectedTask.Id}");
         var task = await result.Content.ReadFromJsonAsync<TaskResponse>();
 
         // Assert
         result.StatusCode.Should().Be(HttpStatusCode.OK);
-        task.Should().BeEquivalentTo(_tasks[1].ToContract());
+        task.Should().BeEquivalentTo(expectedTask.ToContract());
     }
 
     [Fact]
@@ -102,7 +103,7 @@ public sealed class TasksTests(IntegrationTestWebAppFactory factory) : BaseInteg
     }
 
     [Fact]
-    public async Task AddTask_InvalidUser_ShouldBadRequest()
+    public async Task AddTask_InvalidUser_ShouldReturnNotFound()
     {
         // Arrange
         await SeedUsersAsync();
@@ -120,6 +121,46 @@ public sealed class TasksTests(IntegrationTestWebAppFactory factory) : BaseInteg
 
         // Assert
         result.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task AddTask_InvalidTask_ShouldReturnBadRequest()
+    {
+        // Arrange
+        await SeedUsersAsync();
+        var client = _factory.CreateClient();
+        var taskToBeCreated = new TaskCreationRequest(
+            "test task",
+            "my nice test task",
+            DateTime.Now.AddDays(-4),
+            5,
+            TaskVisualizerWeb.Contracts.Task.Commons.TaskStatusEnum.InProgress,
+            _user.Id);
+
+        // Act
+        var result = await client.PostAsJsonAsync($"/tasks", taskToBeCreated);
+
+        // Assert
+        result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task UpdateTaskStatus_ValidTask_ShouldUpdateTaskStatus()
+    {
+        // Arrange
+        await SeedUsersAsync();
+        await SeedTasksForUserAsync(_user.Id);
+        var client = _factory.CreateClient();
+        var taskToBeUpdated = _tasks[1].ToContract() 
+            with { TaskStatus = TaskVisualizerWeb.Contracts.Task.Commons.TaskStatusEnum.Blocked };
+
+        // Act
+        var result = await client.PatchAsJsonAsync($"/tasks", taskToBeUpdated);
+        var updatedTask = await result.Content.ReadFromJsonAsync<TaskResponse>();
+
+        // Assert
+        result.StatusCode.Should().Be(HttpStatusCode.OK);
+        updatedTask.TaskStatus.Should().Be(taskToBeUpdated.TaskStatus);
     }
 
     private async Task SeedUsersAsync()

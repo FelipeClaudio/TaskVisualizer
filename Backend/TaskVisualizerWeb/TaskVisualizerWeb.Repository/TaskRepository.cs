@@ -29,7 +29,7 @@ public class TaskRepository(EfCorePostgreContext context) : ITaskRepository
 
     public async Task<Domain.Models.Task.Task> UpdateAsync(int taskId, TaskStatusEnum taskStatus)
     {
-        var dbTask = await _dbContext.Tasks.SingleAsync(t => t.Id == taskId);
+        var dbTask = await this.GetAsync(taskId);
         dbTask.Statuses.Last().ValidTo = DateTime.UtcNow;
         dbTask.Statuses.Add(new TaskHistory { StatusEnum = taskStatus });
 
