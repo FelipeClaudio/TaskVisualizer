@@ -39,6 +39,7 @@ public class Program
         builder.Services.AddScoped<IDateProvider, DateProvider>();
 
         var app = builder.Build();
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
         app.UseMiddleware<ExceptionHandlerMiddleware>();
 
