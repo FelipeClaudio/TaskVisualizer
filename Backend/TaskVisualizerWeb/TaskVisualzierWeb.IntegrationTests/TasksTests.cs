@@ -163,6 +163,23 @@ public sealed class TasksTests(IntegrationTestWebAppFactory factory) : BaseInteg
         updatedTask.TaskStatus.Should().Be(taskToBeUpdated.TaskStatus);
     }
 
+    [Fact]
+    public async Task UpdateTaskStatus_InvalidTask_ShouldUpdateTaskStatus()
+    {
+        // Arrange
+        await SeedUsersAsync();
+        await SeedTasksForUserAsync(_user.Id);
+        var client = _factory.CreateClient();
+        var taskToBeUpdated = _tasks[1].ToContract() 
+            with { Id = 123, TaskStatus = TaskVisualizerWeb.Contracts.Task.Commons.TaskStatusEnum.Blocked };
+
+        // Act
+        var result = await client.PatchAsJsonAsync($"/tasks", taskToBeUpdated);
+
+        // Assert
+        result.StatusCode.Should().Be(HttpStatusCode.NotFound);
+    }
+
     private async Task SeedUsersAsync()
     {
         var user = Builder<User>.CreateNew().Build();
