@@ -81,7 +81,7 @@ public sealed class TasksTests(IntegrationTestWebAppFactory factory) : BaseInteg
     }
 
     [Fact]
-    public async Task AddTask_ValidTaskAndValidUser_ShouldReturnAddedTaskInTheList()
+    public async Task AddTask_ExistingTaskAndExistingUser_ShouldReturnAddedTaskInTheList()
     {
         // Arrange
         await SeedUsersAsync();
@@ -103,7 +103,7 @@ public sealed class TasksTests(IntegrationTestWebAppFactory factory) : BaseInteg
     }
 
     [Fact]
-    public async Task AddTask_InvalidUser_ShouldReturnNotFound()
+    public async Task AddTask_InexistentUser_ShouldReturnNotFound()
     {
         // Arrange
         await SeedUsersAsync();
@@ -124,7 +124,7 @@ public sealed class TasksTests(IntegrationTestWebAppFactory factory) : BaseInteg
     }
 
     [Fact]
-    public async Task AddTask_InvalidTask_ShouldReturnBadRequest()
+    public async Task AddTask_InexistentTask_ShouldReturnBadRequest()
     {
         // Arrange
         await SeedUsersAsync();
@@ -145,7 +145,7 @@ public sealed class TasksTests(IntegrationTestWebAppFactory factory) : BaseInteg
     }
 
     [Fact]
-    public async Task UpdateTaskStatus_ValidTask_ShouldUpdateTaskStatus()
+    public async Task UpdateTaskStatus_ExistingTask_ShouldUpdateTaskStatus()
     {
         // Arrange
         await SeedUsersAsync();
@@ -164,7 +164,7 @@ public sealed class TasksTests(IntegrationTestWebAppFactory factory) : BaseInteg
     }
 
     [Fact]
-    public async Task UpdateTaskStatus_InvalidTask_ShouldUpdateTaskStatus()
+    public async Task UpdateTaskStatus_InexistentTask_ShouldUpdateTaskStatus()
     {
         // Arrange
         await SeedUsersAsync();
