@@ -1,39 +1,55 @@
 using FluentAssertions;
 using Moq;
 using TaskVisualizerWeb.Application;
-using TaskVisualizerWeb.Domain;
+using TaskVisualizerWeb.Application.User.Mappers;
+using TaskVisualizerWeb.Contracts.User.Request;
+using TaskVisualizerWeb.Domain.Models.User;
+using UserStatusEnum = TaskVisualizerWeb.Domain.Models.User.UserStatusEnum;
 
 namespace TestVisualizerWeb.UnitTests.Application.User;
 
-public class UserServiceTests
+public sealed class UserServiceTests
 {
     [Fact]
-    public void Add_ValidData_ReturnCreatedUser()
+    public async System.Threading.Tasks.Task AddAsync_ValidData_ReturnCreatedUser()
+    {
+        // Arrange
+        var userToBeAdded = new CreateUserRequest("Test User", "test@test.com", TaskVisualizerWeb.Contracts.User.Commons.UserStatusEnum.Active);
+        var response = userToBeAdded.ToDomain();
+
+        var repositoryMock = new Mock<IUserRepository>();
+        repositoryMock
+            .Setup(ur => ur.AddAsync(It.Is<TaskVisualizerWeb.Domain.Models.User.User>(u => 
+                u.Name == userToBeAdded.Name && 
+                u.Email == userToBeAdded.Email &&
+                u.Status == (UserStatusEnum) userToBeAdded.Status
+                )))
+            .ReturnsAsync(response);
+
+        var service = new UserService(repositoryMock.Object, new UserValidator());
+
+        // Act
+        var createdUser = await service.AddAsync(userToBeAdded);
+
+        // Assert
+        createdUser.Should().BeEquivalentTo(userToBeAdded);
+    }
+
+    [Fact]
+    public async System.Threading.Tasks.Task ExistsAsync_ExistingUser_ReturnTrue()
     {
         // Arrange
         var repositoryMock = new Mock<IUserRepository>();
-        var service = new UserService(repositoryMock.Object);
-        var userToBeAdded = new TaskVisualizerWeb.Contracts.User("Test User", "test@test.com", TaskVisualizerWeb.Contracts.UserStatusEnum.Active);
-        var response = new TaskVisualizerWeb.Domain.Models.User.User
-        {
-            Name = userToBeAdded.Name,
-            Email = userToBeAdded.Email,
-            Status = (TaskVisualizerWeb.Domain.Models.User.UserStatusEnum)userToBeAdded.Status,
-        };
         repositoryMock
-            .Setup(ur => ur.Add(It.Is<TaskVisualizerWeb.Domain.Models.User.User>(u => 
-                u.Name == userToBeAdded.Name && 
-                u.Email == userToBeAdded.Email &&
-                u.Status == (TaskVisualizerWeb.Domain.Models.User.UserStatusEnum) userToBeAdded.Status
-                )))
-            .Returns(response);
+            .Setup(ur => ur.ExistsAsync(123))
+            .ReturnsAsync(true);
+
+        var service = new UserService(repositoryMock.Object, new UserValidator());
 
         // Act
-        var createdUser = service.Add(userToBeAdded);
+        var userSearchResult = await service.Exists(123);
 
         // Assert
-        createdUser.Name.Should().Be(userToBeAdded.Name);
-        createdUser.Email.Should().Be(userToBeAdded.Email);
-        createdUser.Status.Should().Be(userToBeAdded.Status);
+        userSearchResult.Should().BeTrue();
     }
 }

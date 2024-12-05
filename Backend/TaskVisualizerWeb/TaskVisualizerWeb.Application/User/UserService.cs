@@ -1,42 +1,42 @@
-﻿using TaskVisualizerWeb.Application.User;
-using TaskVisualizerWeb.Contracts;
-using TaskVisualizerWeb.Domain;
+﻿using FluentValidation;
+using TaskVisualizerWeb.Application.User;
+using TaskVisualizerWeb.Application.User.Mappers;
+using TaskVisualizerWeb.Contracts.User.Response;
+using TaskVisualizerWeb.Domain.Exceptions;
+using TaskVisualizerWeb.Domain.Models.User;
 
 namespace TaskVisualizerWeb.Application;
 
-public class UserService(IUserRepository repository) : IUserService
+public class UserService(IUserRepository repository, IValidator<Domain.Models.User.User> validator) : IUserService
 {
     private readonly IUserRepository _repository = repository;
+    private readonly IValidator<Domain.Models.User.User> _validator = validator;
 
-    public Contracts.User Add(Contracts.User User)
+    public async Task<UserResponse> AddAsync(Contracts.User.Request.CreateUserRequest request)
     {
-        var user =  _repository.Add(
-            new Domain.Models.User.User { 
-                Name = User.Name, 
-                Email = User.Email, 
-                Status = (Domain.Models.User.UserStatusEnum)User.Status 
-            });
+        var domainUser = request.ToDomain();
+        await _validator.ValidateAndThrowAsync(domainUser);
 
-        return new Contracts.User(user.Name, user.Email, (UserStatusEnum)user.Status);
+        var user =  await _repository.AddAsync(domainUser);
+
+        return user.ToContract();
     }
 
-    public Contracts.User Get(int id)
+    public async Task<UserResponse> GetAsync(int id)
     {
-        var user = _repository.Get(id);
+        var user = await _repository.GetAsync(id);
         if (user is null)
-            throw new InvalidDataException($"User with id '{id}' does not exist");
+            throw new ResourceNotFoundException($"User with id '{id}' does not exist");
 
-        return new Contracts.User(user.Name, user.Email, (UserStatusEnum)user.Status);
+        return user.ToContract();
     }
 
-    public List<Contracts.User> GetAll()
+    public async Task<List<UserResponse>> GetAllAsync()
     {
-       var users = _repository.GetAll();
+       var users = await _repository.GetAllAsync();
 
-        return users.Select(user => new Contracts.User { 
-            Email = user.Email, 
-            Name = user.Name, 
-            Status = (UserStatusEnum)user.Status }
-        ).ToList();
+       return users.Select(user => user.ToContract()).ToList();
     }
+
+    public async Task<bool> Exists(int id) => await _repository.ExistsAsync(id);
 }

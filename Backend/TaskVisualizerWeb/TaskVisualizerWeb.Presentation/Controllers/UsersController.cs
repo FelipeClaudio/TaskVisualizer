@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TaskVisualizerWeb.Application.User;
-using TaskVisualizerWeb.Contracts;
+using TaskVisualizerWeb.Contracts.User.Request;
+using TaskVisualizerWeb.Contracts.User.Response;
 
 namespace TaskVisualizerWeb.Controllers;
 
@@ -12,11 +13,11 @@ public class UsersController(ILogger<UsersController> logger, IUserService userS
     private readonly IUserService _userService = userService;
 
     [HttpGet("{id}")]
-    public User Get(int id) => _userService.Get(id);
+    public async Task<UserResponse> GetAsync(int id) => await _userService.GetAsync(id);
 
     [HttpGet]
-    public List<User> GetAll() => _userService.GetAll();
+    public async Task<List<UserResponse>> GetAllAsync() => await _userService.GetAllAsync();
 
     [HttpPost]
-    public User Add(User user) => _userService.Add(user);
+    public async Task<UserResponse> AddAsync(CreateUserRequest user) => await _userService.AddAsync(user);
 }
