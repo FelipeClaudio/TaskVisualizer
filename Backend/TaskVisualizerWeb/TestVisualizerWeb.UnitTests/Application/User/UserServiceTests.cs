@@ -11,7 +11,7 @@ namespace TestVisualizerWeb.UnitTests.Application.User;
 public sealed class UserServiceTests
 {
     [Fact]
-    public async System.Threading.Tasks.Task Add_ValidData_ReturnCreatedUser()
+    public async System.Threading.Tasks.Task AddAsync_ValidData_ReturnCreatedUser()
     {
         // Arrange
         var userToBeAdded = new CreateUserRequest("Test User", "test@test.com", TaskVisualizerWeb.Contracts.User.Commons.UserStatusEnum.Active);

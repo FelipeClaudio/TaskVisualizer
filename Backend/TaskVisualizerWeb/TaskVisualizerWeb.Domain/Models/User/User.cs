@@ -10,9 +10,3 @@ public sealed class User : Entity
     public ushort CurrentPoints { get; set; } = 0;
     public required UserStatusEnum Status { get; set; }
 }
-
-public enum UserStatusEnum
-{
-    Active,
-    Inactive,
-}
