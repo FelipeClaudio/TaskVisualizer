@@ -4,11 +4,10 @@ import { IUsersResponse } from '../../core/models/IUsersResponse';
 import { MatTableModule } from '@angular/material/table';
 
 @Component({
-  selector: 'app-example-table',
-  templateUrl: './example-table.component.html',
-  styleUrls: ['./example-table.component.scss'],
-  imports: [MatTableModule],
-  standalone: true
+    selector: 'app-example-table',
+    templateUrl: './example-table.component.html',
+    styleUrls: ['./example-table.component.scss'],
+    imports: [MatTableModule]
 })
 export class ExampleTableComponent {
   private _displayedColumns: string[];
