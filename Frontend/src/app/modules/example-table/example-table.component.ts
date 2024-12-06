@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { HomePageServiceService } from '../services/home-page-service.service';
-import { IUsersResponse } from '../models/IUsersResponse';
+import { HomePageServiceService } from '../../core/services/home-page-service.service';
+import { IUsersResponse } from '../../core/models/IUsersResponse';
 import { MatTableModule } from '@angular/material/table';
 
 @Component({

@@ -2,11 +2,12 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-import { MainPageComponent } from './main-page/main-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MenuPositionExampleComponent } from './menu-position-example/menu-position-example.component';
-import { ExampleTableComponent } from './example-table/example-table.component';
+import { MenuPositionExampleComponent } from './modules/menu-position-example/menu-position-example.component';
+import { ExampleTableComponent } from './modules/example-table/example-table.component';
+import { MainPageComponent } from './modules/main-page/main-page.component';
+import { TopTabComponent } from './shared/components/top-tab/top-tab.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ExampleTableComponent } from './example-table/example-table.component';
     HttpClientModule,
     BrowserAnimationsModule,
     MenuPositionExampleComponent,
-    ExampleTableComponent
+    ExampleTableComponent,
+    TopTabComponent
   ],
   providers: [],
   bootstrap: [MainPageComponent]
